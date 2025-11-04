@@ -11,11 +11,12 @@ export default function Footer() {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <Image
-                src="/v21 no bagroundnew webp.webp"
+                src="/volunbase-logo.svg"
                 alt="Volunbase Logo"
                 width={32}
                 height={32}
                 className="w-8 h-8"
+                loading="lazy"
               />
               <span className="text-xl font-bold">Volunbase</span>
             </div>

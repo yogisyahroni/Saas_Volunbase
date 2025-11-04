@@ -1,10 +1,12 @@
-'use client';
+"use client";
 
 import { Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useUserLocation } from '@/hooks/use-location';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   globalPricing,
   indonesiaPricing,
@@ -13,6 +15,15 @@ import {
 
 export default function Pricing() {
   const { isIndonesia, isLoading } = useUserLocation();
+  const router = useRouter();
+  const [tier, setTier] = useState<string>('');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const t = localStorage.getItem('vb_tier') || '';
+      setTier(t);
+    }
+  }, []);
 
   const pricing = isIndonesia ? indonesiaPricing : globalPricing;
 
@@ -82,8 +93,21 @@ export default function Pricing() {
                       : 'w-full'
                   }
                   variant={tier.popular ? 'default' : 'outline'}
+                  onClick={() => {
+                    if (tier.price === 0) {
+                      router.push('/(auth)/register');
+                    } else {
+                      if (tier === 'pro') {
+                        router.push('/admin');
+                      } else {
+                        const currency = isIndonesia ? 'IDR' : 'USD';
+                        const plan = encodeURIComponent(tier.name);
+                        router.push(`/admin?upgrade=${plan}&currency=${currency}`);
+                      }
+                    }
+                  }}
                 >
-                  {tier.price === 0 ? 'Start Free' : 'Get Started'}
+                  {tier.price === 0 ? 'Start Free' : (tier === 'pro' ? 'Manage Plan' : 'Get Started')}
                 </Button>
               </CardHeader>
 

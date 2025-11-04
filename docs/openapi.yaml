@@ -1,0 +1,52 @@
+openapi: 3.0.3
+info:
+  title: Volunbase API
+  version: 0.1.0
+servers:
+  - url: https://api.volunbase.com
+paths:
+  /public/register:
+    post:
+      summary: Register volunteer to a shift
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                eventId: { type: string }
+                shiftId: { type: string }
+                volunteerName: { type: string }
+                volunteerEmail: { type: string, format: email }
+                captchaToken: { type: string }
+      responses:
+        '200': { description: Registration accepted }
+        '403': { description: CAPTCHA failed }
+  /admin/events:
+    get:
+      summary: List events
+      responses:
+        '200': { description: OK }
+    post:
+      summary: Create event
+      responses:
+        '200': { description: OK }
+        '403': { description: Forbidden }
+  /admin/payment/create-session:
+    post:
+      summary: Create checkout session (Stripe/Midtrans)
+      responses:
+        '200': { description: OK }
+  /webhook/payment:
+    post:
+      summary: Payment webhook
+      responses:
+        '200': { description: OK }
+        '400': { description: Invalid signature }
+  /super-admin/config/payment:
+    post:
+      summary: Save payment secrets
+      responses:
+        '200': { description: OK }
+        '500': { description: Failed }

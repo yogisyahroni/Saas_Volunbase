@@ -12,11 +12,12 @@ export default function CTA() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="relative">
               <Image
-                src="/volun no baground (1) webp.webp"
+                src="/volunbase-full-1024.webp"
                 alt="Volunbase Platform"
                 width={500}
                 height={400}
                 className="w-full h-auto rounded-lg"
+                loading="lazy"
               />
             </div>
 

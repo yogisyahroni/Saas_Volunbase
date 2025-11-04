@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 
 export default function Header() {
@@ -30,7 +31,7 @@ export default function Header() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Image
-              src="/v21 no bagroundnew webp.webp"
+              src="/volunbase-logo.svg"
               alt="Volunbase Logo"
               width={40}
               height={40}
@@ -67,8 +68,12 @@ export default function Header() {
           </div>
 
           <div className="hidden md:flex items-center gap-4">
-            <Button variant="ghost">Sign In</Button>
-            <Button>Get Started</Button>
+            <Link href="/(auth)/login">
+              <Button variant="ghost">Sign In</Button>
+            </Link>
+            <Link href="/(auth)/register">
+              <Button>Get Started</Button>
+            </Link>
           </div>
 
           <button
@@ -114,10 +119,12 @@ export default function Header() {
               Testimonials
             </a>
             <div className="flex flex-col gap-2 pt-4">
-              <Button variant="ghost" className="w-full">
-                Sign In
-              </Button>
-              <Button className="w-full">Get Started</Button>
+              <Link href="/(auth)/login" className="w-full">
+                <Button variant="ghost" className="w-full">Sign In</Button>
+              </Link>
+              <Link href="/(auth)/register" className="w-full">
+                <Button className="w-full">Get Started</Button>
+              </Link>
             </div>
           </div>
         )}

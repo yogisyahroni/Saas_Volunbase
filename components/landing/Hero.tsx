@@ -12,29 +12,27 @@ export default function Hero() {
           <div className="space-y-8">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/10 border border-green-500/20 rounded-full text-sm text-green-700 dark:text-green-400">
               <CheckCircle className="w-4 h-4" />
-              <span>Trusted by 1000+ organizations</span>
+              <span>Dipercaya oleh 1000+ organisasi</span>
             </div>
 
             <h1 className="text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
-              Volunteer Management{' '}
+              Manajemen Relawan{' '}
               <span className="text-green-600 dark:text-green-500">
-                Made Simple
+                Jadi Sederhana
               </span>
             </h1>
 
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Eliminate 90% of administrative chaos. Streamline volunteer
-              registrations, shift scheduling, and communications in one
-              powerful platform.
+              Eliminasi 90% kekacauan administrasi. Sederhanakan pendaftaran, penjadwalan shift, dan komunikasi relawan dalam satu platform yang kuat.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
               <Button size="lg" className="text-lg px-8 group">
-                Get Started Free
+                Mulai Gratis
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button size="lg" variant="outline" className="text-lg px-8">
-                Watch Demo
+                Lihat Demo
               </Button>
             </div>
 
@@ -63,12 +61,12 @@ export default function Hero() {
           <div className="relative">
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <Image
-                src="/volun gabungan webp.webp"
+                src="/volunbase-full-1842.webp"
                 alt="Volunbase Dashboard"
                 width={600}
                 height={400}
                 className="w-full h-auto"
-                priority
+                loading="lazy"
               />
             </div>
             <div className="absolute -top-4 -right-4 w-72 h-72 bg-green-500/20 dark:bg-green-500/10 rounded-full blur-3xl"></div>
