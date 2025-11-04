@@ -7,34 +7,42 @@ resource "aws_s3_bucket" "site" {
   force_destroy = true
 }
 
-resource "aws_s3_bucket_website_configuration" "site" {
-  bucket = aws_s3_bucket.site.id
-  index_document {
-    suffix = "index.html"
-  }
-  error_document {
-    key = "404.html"
-  }
+# Optional website config (not used by CloudFront origin); keeping index/error for reference
+#resource "aws_s3_bucket_website_configuration" "site" {
+#  bucket = aws_s3_bucket.site.id
+#  index_document {
+#    suffix = "index.html"
+#  }
+#  error_document {
+#    key = "404.html"
+#  }
+#}
+
+resource "aws_cloudfront_origin_access_identity" "oai" {
+  comment = "Volunbase CDN access"
 }
 
-resource "aws_s3_bucket_policy" "public_read" {
+resource "aws_s3_bucket_policy" "oai_read" {
   bucket = aws_s3_bucket.site.id
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [{
-      Sid       = "PublicReadGetObject",
-      Effect    = "Allow",
-      Principal = "*",
-      Action    = ["s3:GetObject"],
-      Resource  = ["${aws_s3_bucket.site.arn}/*"],
+      Sid      = "AllowCloudFrontOAIRead",
+      Effect   = "Allow",
+      Principal = { CanonicalUser = aws_cloudfront_origin_access_identity.oai.s3_canonical_user_id },
+      Action   = ["s3:GetObject"],
+      Resource = ["${aws_s3_bucket.site.arn}/*"],
     }]
   })
 }
 
 resource "aws_cloudfront_distribution" "cdn" {
   origin {
-    domain_name = aws_s3_bucket_website_configuration.site.website_endpoint
+    domain_name = aws_s3_bucket.site.bucket_regional_domain_name
     origin_id   = aws_s3_bucket.site.bucket
+    s3_origin_config {
+      origin_access_identity = aws_cloudfront_origin_access_identity.oai.cloudfront_access_identity_path
+    }
   }
 
   enabled             = true
@@ -70,4 +78,3 @@ output "site_bucket_name" {
 output "cdn_domain_name" {
   value = aws_cloudfront_distribution.cdn.domain_name
 }
-
