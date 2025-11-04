@@ -7,6 +7,10 @@ on:
         description: "Target S3 bucket name (from IaC outputs)"
         required: true
         type: string
+      distribution_id:
+        description: "CloudFront Distribution ID (optional, for cache invalidation)"
+        required: false
+        type: string
 
 jobs:
   deploy:
@@ -41,3 +45,7 @@ jobs:
       - name: Sync to S3
         run: aws s3 sync Saas_volunbase/out s3://${{ inputs.bucket_name }}/ --delete
 
+      - name: Invalidate CloudFront (optional)
+        if: ${{ inputs.distribution_id != '' }}
+        run: |
+          aws cloudfront create-invalidation --distribution-id "${{ inputs.distribution_id }}" --paths "/*"

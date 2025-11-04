@@ -1,0 +1,38 @@
+name: Deploy Backend
+
+on:
+  workflow_dispatch:
+    inputs:
+      function:
+        description: "Lambda function to update (hello/register)"
+        required: true
+        type: choice
+        options:
+          - hello
+          - register
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Package function
+        run: |
+          fname="${{ inputs.function }}"
+          cp "Saas_volunbase/services/api/${fname}.js" .
+          zip -j "lambda-${fname}.zip" "${fname}.js"
+
+      - name: Update Lambda code
+        run: |
+          fname="${{ inputs.function }}"
+          aws lambda update-function-code --function-name "volunbase-${fname}" --zip-file "fileb://lambda-${fname}.zip"
+
